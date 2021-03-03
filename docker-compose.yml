@@ -1,9 +1,10 @@
 version: "3"
 services:
-  blue:
+  app:
+    image: ${ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/${REPO_NAME}:${IMG_TAG}
     build: .
     environment:
-      BG_COLOR: "#00f"
+      BG_COLOR: ${BG_COLOR}
     command: ["sh", "-c", "
       envsubst </usr/share/nginx/html/index.html.in >/usr/share/nginx/html/index.html &&
       nginx -g 'daemon off;'"]
@@ -12,21 +13,6 @@ services:
       options:
         awslogs-group: /sample/app
         awslogs-region: ap-northeast-1
-        awslogs-stream-prefix: blue
+        awslogs-stream-prefix: app
     ports:
-      - "8000:80"
-  green:
-    build: .
-    environment:
-      BG_COLOR: "#080"
-    command: ["sh", "-c", "
-      envsubst </usr/share/nginx/html/index.html.in >/usr/share/nginx/html/index.html &&
-      nginx -g 'daemon off;'"]
-    logging:
-      driver: awslogs
-      options:
-        awslogs-group: /sample/app
-        awslogs-region: ap-northeast-1
-        awslogs-stream-prefix: green
-    ports:
-      - "8080:80"
+      - "80:80"

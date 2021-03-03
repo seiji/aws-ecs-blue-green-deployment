@@ -1,7 +1,4 @@
 services:
-  blue:
-    logging:
-      driver: "json-file"
-  green:
+  app:
     logging:
       driver: "json-file"
