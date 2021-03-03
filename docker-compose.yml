@@ -1,0 +1,32 @@
+version: "3"
+services:
+  blue:
+    build: .
+    environment:
+      BG_COLOR: "#00f"
+    command: ["sh", "-c", "
+      envsubst </usr/share/nginx/html/index.html.in >/usr/share/nginx/html/index.html &&
+      nginx -g 'daemon off;'"]
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: /sample/app
+        awslogs-region: ap-northeast-1
+        awslogs-stream-prefix: blue
+    ports:
+      - "8000:80"
+  green:
+    build: .
+    environment:
+      BG_COLOR: "#080"
+    command: ["sh", "-c", "
+      envsubst </usr/share/nginx/html/index.html.in >/usr/share/nginx/html/index.html &&
+      nginx -g 'daemon off;'"]
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: /sample/app
+        awslogs-region: ap-northeast-1
+        awslogs-stream-prefix: green
+    ports:
+      - "8080:80"
