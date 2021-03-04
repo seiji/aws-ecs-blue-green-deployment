@@ -47,5 +47,7 @@
     "EC2"
   ],
   "family": "aws-ecs-blue-green-deployment",
+  "networkMode": "awsvpc",
+  "cpu": "1024",
   "volumes": []
 }
