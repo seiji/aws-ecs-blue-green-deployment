@@ -9,7 +9,7 @@ phases:
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMG_TAG=${COMMIT_HASH:=latest}
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-      - git checkout ${CODEBUILD_WEBHOOK_BASE_REF#refs/heads/}
+      # - git checkout ${CODEBUILD_WEBHOOK_BASE_REF#refs/heads/}
       - docker pull $ECR_REPOSITORY_URL:latest >/dev/null || true
   build:
     commands:
