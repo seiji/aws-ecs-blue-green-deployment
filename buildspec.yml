@@ -24,8 +24,10 @@ phases:
       - printf '{"ImageURI":"%s"}' $ECR_REPOSITORY_URL:$IMG_TAG >imageDetail.json
 artifacts:
   files:
-    - imagedefinitions.json
+    - appspec.yaml
     - imageDetail.json
+    - imagedefinitions.json
+    - taskdef.json
 # cache:
 #   paths:
 #     - node_modules/**/*
