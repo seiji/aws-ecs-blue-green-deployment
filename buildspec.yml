@@ -1,0 +1,31 @@
+version: 0.2
+env:
+  variables:
+    DOCKER_BUILDKIT: "1"
+    DOCKER_CLI_EXPERIMENTAL: enabled
+phases:
+  pre_build:
+    commands:
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMG_TAG=${COMMIT_HASH:=latest}
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - git checkout ${CODEBUILD_WEBHOOK_BASE_REF#refs/heads/}
+      - docker pull $ECR_REPOSITORY_URL:latest >/dev/null || true
+  build:
+    commands:
+      - IMG_TAG=${IMG_TAG} docker build -t $ECR_REPOSITORY_URL:latest .
+      - docker tag $ECR_REPOSITORY_URL:latest $ECR_REPOSITORY_URL:$IMG_TAG
+  post_build:
+    commands:
+      - (if [[ "$CODEBUILD_BUILD_SUCCEEDING" == "0" ]]; then exit 1; else exit 0; fi)
+      - docker push $ECR_REPOSITORY_URL:$IMG_TAG >/dev/null
+      - docker push $ECR_REPOSITORY_URL:latest >/dev/null
+      - printf '[{"name":"app","imageUri":"%s"}]' $ECR_REPOSITORY_URL:$IMG_TAG >imagedefinitions.json
+      - printf '{"ImageURI":"%s"}' $ECR_REPOSITORY_URL:$IMG_TAG >imageDetail.json
+artifacts:
+  files:
+    - imagedefinitions.json
+    - imageDetail.json
+# cache:
+#   paths:
+#     - node_modules/**/*
