@@ -1,0 +1,51 @@
+{
+  "ipcMode": null,
+  "executionRoleArn": null,
+  "containerDefinitions": [
+    {
+      "dnsSearchDomains": [],
+      "environmentFiles": null,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "secretOptions": null,
+        "options": {
+          "awslogs-group": "/sample/app",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "app"
+        }
+      },
+      "entryPoint": [],
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "protocol": "tcp",
+          "containerPort": 80
+        }
+      ],
+      "command": [
+        "sh",
+        "-c",
+        " envsubst </usr/share/nginx/html/index.html.in >/usr/share/nginx/html/index.html && nginx -g 'daemon off;'"
+      ],
+      "cpu": 0,
+      "environment": [
+        {
+          "name": "BG_COLOR",
+          "value": "#080"
+        }
+      ],
+      "image": "<IMAGE>",
+      "essential": true,
+      "privileged": false,
+      "name": "app"
+    }
+  ],
+  "placementConstraints": [],
+  "memory": "128",
+  "taskRoleArn": null,
+  "compatibilities": [
+    "EC2"
+  ],
+  "family": "aws-ecs-blue-green-deployment",
+  "volumes": []
+}
