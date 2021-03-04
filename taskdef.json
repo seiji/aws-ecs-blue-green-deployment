@@ -31,7 +31,7 @@
       "environment": [
         {
           "name": "BG_COLOR",
-          "value": "#080"
+          "value": "#00f"
         }
       ],
       "image": "<IMAGE>",
