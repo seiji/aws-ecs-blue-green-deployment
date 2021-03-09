@@ -2,7 +2,7 @@ name: ecr-push
 on:
   push:
     branches:
-    - master
+    - main
     tags:
     - '*'
 env:
