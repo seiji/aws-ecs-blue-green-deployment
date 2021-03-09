@@ -40,6 +40,7 @@ jobs:
       id: slug
     -
       name: Build and Push
+      id: build-push
       env:
         DOCKER_BUILDKIT: 1
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -54,12 +55,11 @@ jobs:
           -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:latest \
           --push .
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
     -
       name: Logout from Amazon ECR
       if: always()
       run: |
         docker logout ${{ steps.login-ecr.outputs.registry }}
-    -
-      name: Dump
-      run: |
-        echo $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    - name: Get image
+      run: echo "The image is ${{ steps.build-push.outputs.IMAGE }}"
