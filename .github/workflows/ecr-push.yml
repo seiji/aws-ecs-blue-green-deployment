@@ -55,7 +55,7 @@ jobs:
           -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:latest \
           --push .
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        echo "::set-output name=IMAGE::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
     -
       name: Logout from Amazon ECR
       if: always()
