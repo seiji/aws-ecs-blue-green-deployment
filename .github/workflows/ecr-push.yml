@@ -5,13 +5,6 @@ on:
     - main
     tags:
     - '*'
-env:
-  AWS_DEFAULT_REGION: 'ap-northeast-1'
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
-  PLATFORM: linux/amd64
-
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -41,6 +34,7 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: seiji/aws-ecs-blue-green-deployment
         IMAGE_TAG: ${{ steps.slug.outputs.sha7 }}
+        PLATFORM: linux/amd64
       run: |
         docker buildx build \
           --build-arg BUILDKIT_INLINE_CACHE=1 \
